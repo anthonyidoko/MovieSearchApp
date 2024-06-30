@@ -10,7 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.moviesearch.ui.screens.MoviesSearchScreens
 import com.example.moviesearch.ui.screens.mainScreen.MainScreen
+import com.example.moviesearch.ui.screens.mainScreen.MainScreenViewModel
+import com.example.moviesearch.ui.screens.movieDetail.MovieDetailScreen
 import com.example.moviesearch.ui.theme.MovieSearchTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,12 +28,40 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val controller = rememberNavController()
             MovieSearchTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    NavHost(
+                        navController = controller,
+                        startDestination = MoviesSearchScreens.MainScreen.route
+                    ) {
+                        composable(
+                            route = MoviesSearchScreens.MainScreen.route
+                        ) {
+
+                            MainScreen(
+                                onNavigate = {
+                                    controller.navigate("${MoviesSearchScreens.MovieDetailScreen.route}/$it")
+                                })
+                        }
+                        composable(
+                            route = "${MoviesSearchScreens.MovieDetailScreen.route}/{id}",
+                            arguments = listOf(navArgument("id")
+                            { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val movieId = backStackEntry.arguments?.getString("id")
+                            MovieDetailScreen(movieId = movieId){
+                                controller.popBackStack()
+                            }
+                        }
+
+                    }
+
+
                 }
             }
         }

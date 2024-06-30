@@ -4,9 +4,10 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.moviesearch.data.database.dao.MoviesDao
 import com.example.moviesearch.data.model.Movie
+import com.example.moviesearch.data.model.MovieDetailResponse
 
 @Database(
-    entities = [Movie::class],
+    entities = [MovieDetailResponse::class],
     version =  1,
     exportSchema = true
 )

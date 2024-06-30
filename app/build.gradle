@@ -5,6 +5,10 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+def cred = rootProject.file("credentials.properties")
+def credProperties = new Properties()
+credProperties.load(new FileInputStream(cred))
+
 android {
     namespace 'com.example.moviesearch'
     compileSdk 34
@@ -26,6 +30,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'API_KEY', credProperties["apiKey"]
+            buildConfigField 'String', 'BASE_URL', credProperties["baseUrl"]
+            buildConfigField 'String', 'IMAGE_BASE_URL', credProperties["imageBaseUrl"]
+        }
+        debug{
+            buildConfigField 'String', 'API_KEY', credProperties["apiKey"]
+            buildConfigField 'String', 'BASE_URL', credProperties["baseUrl"]
+            buildConfigField 'String', 'IMAGE_BASE_URL', credProperties["imageBaseUrl"]
+
         }
     }
     compileOptions {
@@ -37,6 +50,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
@@ -71,5 +85,21 @@ dependencies {
 
     def room_version = "2.6.1"
     implementation libs.androidx.room.ktx
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+//    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:2.6.1" // Replace with your version
+
+
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.hilt.navigation.compose.v120
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+
+    //Coil
+    implementation "io.coil-kt:coil-compose:2.6.0"
+
+
 }
