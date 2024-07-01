@@ -28,7 +28,7 @@ class MovieDetailViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 loading = false,
-                                isError = it.movie != null,
+                                isError = it.movie == null,
                                 errorMessage = response.message ?: "An error has occurred"
                             )
                         }
