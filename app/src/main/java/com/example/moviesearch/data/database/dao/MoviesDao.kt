@@ -21,6 +21,4 @@ interface MoviesDao {
     @Query("SELECT * FROM MOVIES_TABLE WHERE imdbID =:movieId")
     fun getMovieById(movieId: String): Flow<MovieDetailResponse?>
 
-    @Delete
-    suspend fun deleteMovie(movie: MovieDetailResponse)
 }
