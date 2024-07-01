@@ -35,7 +35,8 @@ fun LoadingDialog(
         Text(
             text = message, modifier = Modifier.padding(top = 10.dp),
             style = MaterialTheme.typography.labelMedium.copy(
-                fontFamily = FontFamily(Font(R.font.playwrite_regular))
+                fontFamily = FontFamily(Font(R.font.playwrite_regular)),
+                color = MaterialTheme.colorScheme.onPrimary
             )
         )
     }
