@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieSearch</string>
+    <string name="app_name">Movie Search</string>
     <string name="enter_movie_title_to_search">Enter movie title to search</string>
     <string name="send_icon">Send Icon</string>
     <string name="movie_poster">Movie Poster</string>
