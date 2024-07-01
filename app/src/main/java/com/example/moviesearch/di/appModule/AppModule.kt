@@ -32,21 +32,21 @@ object AppModule {
         return Room.databaseBuilder(
             context = context,
             klass = MovieSearchDatabase::class.java,
-            name = "movie_search_database",
-        ).build()
+            name = MovieSearchDatabase.NAME)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient{
+    fun provideOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-        val builder =  OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
         builder.connectTimeout(70, TimeUnit.SECONDS)
             .writeTimeout(70, TimeUnit.SECONDS)
             .readTimeout(70, TimeUnit.SECONDS)
-//            .addInterceptor(TokenInterceptor())
-        if (BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             builder.addInterceptor(interceptor)
         }
         return builder.build()
@@ -54,7 +54,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitInstance(client: OkHttpClient): Retrofit{
+    fun provideRetrofitInstance(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -64,7 +64,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMovieSearchService(retrofit: Retrofit): MovieSearchService{
+    fun provideMovieSearchService(retrofit: Retrofit): MovieSearchService {
         return retrofit.create(MovieSearchService::class.java)
     }
 
@@ -74,7 +74,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideConnectivityManager(@ApplicationContext context: Context): NetworkConnectionObserver{
+    fun provideConnectivityManager(@ApplicationContext context: Context): NetworkConnectionObserver {
         return NetworkConnectionObserverImpl(context)
     }
 

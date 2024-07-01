@@ -13,4 +13,8 @@ import com.example.moviesearch.data.model.MovieDetailResponse
 )
 abstract class MovieSearchDatabase: RoomDatabase() {
     abstract fun movieSearchDao(): MoviesDao
+
+    companion object{
+        const val NAME = "movie_search_database"
+    }
 }
