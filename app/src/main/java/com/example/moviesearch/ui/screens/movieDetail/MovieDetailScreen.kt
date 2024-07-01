@@ -2,6 +2,7 @@ package com.example.moviesearch.ui.screens.movieDetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.MarqueeAnimationMode
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
@@ -113,7 +115,7 @@ fun MovieDetailScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
 
         Card(
@@ -132,7 +134,9 @@ fun MovieDetailScreen(
         }
 
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.secondary)
+                .verticalScroll(rememberScrollState())
         ) {
 
             Text(
@@ -148,7 +152,8 @@ fun MovieDetailScreen(
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = FontFamily(Font(R.font.playwrite_wght)),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    letterSpacing = 8.sp
                 )
             )
 
@@ -179,7 +184,7 @@ fun TextItem(
             text = title,
             style = MaterialTheme.typography.titleSmall.copy(
                 fontFamily = FontFamily(Font(R.font.playwrite_wght)),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSecondary,
                 fontWeight = FontWeight.ExtraBold
             )
         )
@@ -187,9 +192,10 @@ fun TextItem(
         Text(
             text = body,
             modifier = Modifier.padding(horizontal = 10.dp),
-            style = MaterialTheme.typography.bodyMedium.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
                 fontFamily = FontFamily(Font(R.font.roboto_condensed_regular)),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onTertiary,
+                letterSpacing = 1.sp
             )
         )
 

@@ -176,7 +176,7 @@ fun MovieCardItem(
                 .fillMaxWidth()
                 .height(250.dp),
             model = movie.poster ?: "",
-            contentDescription = "movie poster",
+            contentDescription = stringResource(id = R.string.movie_poster),
             contentScale = ContentScale.FillBounds
         )
 
@@ -185,7 +185,9 @@ fun MovieCardItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.weight(1f).padding(start = 2.dp)) {
+            Box(modifier = Modifier
+                .weight(1f)
+                .padding(start = 2.dp)) {
                 Text(
                     text = movie.title ?: "",
                     modifier = Modifier.basicMarquee(
@@ -205,10 +207,12 @@ fun MovieCardItem(
 
             Text(
                 text = movie.year ?: "",
-                modifier = Modifier.basicMarquee(
-                    animationMode = MarqueeAnimationMode.Immediately,
-                    delayMillis = 0,
-                ).padding(end = 2.dp),
+                modifier = Modifier
+                    .basicMarquee(
+                        animationMode = MarqueeAnimationMode.Immediately,
+                        delayMillis = 0,
+                    )
+                    .padding(end = 2.dp),
                 style = MaterialTheme.typography.bodySmall
                 .copy(
                     fontWeight = FontWeight.ExtraLight,
@@ -233,12 +237,14 @@ fun SearchBar(
         modifier = modifier,
         value = input, onValueChange = onInputChange,
         textStyle = placeHolderTextStyle().copy(
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily(Font(R.font.roboto_condensed_regular))
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily(Font(R.font.roboto_condensed_regular)),
+            color = MaterialTheme.colorScheme.tertiary,
+            letterSpacing = 2.sp
         ),
         shape = RoundedCornerShape(35.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            cursorColor = MaterialTheme.colorScheme.secondary,
             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
             unfocusedBorderColor = MaterialTheme.colorScheme.secondary
         ),
@@ -260,7 +266,7 @@ fun SearchBar(
 fun placeHolderTextStyle(): TextStyle {
     return MaterialTheme.typography.labelLarge.copy(
         fontWeight = FontWeight.Light,
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = MaterialTheme.colorScheme.onSecondary,
         fontFamily = FontFamily(Font(R.font.playwrite_regular))
     )
 }
