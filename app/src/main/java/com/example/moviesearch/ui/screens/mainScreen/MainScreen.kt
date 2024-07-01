@@ -115,6 +115,10 @@ fun MainScreen(
                 onDismiss = {
                     searchInput = ""
                     onSearchClick.invoke(searchInput)
+                },
+                onAction = {
+                    searchInput = ""
+                    onSearchClick.invoke(searchInput)
                 }
 
             )

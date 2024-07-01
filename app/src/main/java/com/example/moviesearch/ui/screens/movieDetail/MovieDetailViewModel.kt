@@ -17,20 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val repository: MainRepository,
-    private val networkObserver: NetworkConnectionObserver
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MovieDetailScreenUiState())
     val uiState get() = _uiState.asStateFlow()
     private fun getMovieById(movieId: String) {
         viewModelScope.launch {
-            observeNetwork {
                 when (val response = repository.getMovieById(movieId)) {
                     is NetworkResource.Error -> {
                         _uiState.update {
                             it.copy(
                                 loading = false,
-                                isError = true,
+                                isError = it.movie != null,
                                 errorMessage = response.message ?: "An error has occurred"
                             )
                         }
@@ -47,8 +45,6 @@ class MovieDetailViewModel @Inject constructor(
                     }
                 }
             }
-        }
-
     }
 
     fun getMovieFromRoomById(movieId: String) {
@@ -62,29 +58,6 @@ class MovieDetailViewModel @Inject constructor(
             repository.getMovieFromRoomById(movieId).collectLatest { movie ->
                 if (movie != null) {
                     _uiState.update { it.copy(movie = movie, loading = false) }
-                }
-            }
-        }
-    }
-
-
-    private fun observeNetwork(block: suspend () -> Unit) {
-        viewModelScope.launch {
-            networkObserver.observe().collectLatest { status ->
-                when (status) {
-                    NetworkStatus.Available -> {
-                        block()
-                    }
-                    NetworkStatus.UnAvailable -> {
-                        _uiState.update {
-                            it.copy(errorMessage = "Turn on your internet", loading = false)
-                        }
-                    }
-                    NetworkStatus.Lost -> {
-                        _uiState.update {
-                            it.copy(errorMessage = "No internet", loading = false)
-                        }
-                    }
                 }
             }
         }

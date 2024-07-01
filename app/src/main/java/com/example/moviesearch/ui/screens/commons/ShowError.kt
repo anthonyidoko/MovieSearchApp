@@ -49,7 +49,9 @@ fun ErrorScreen(
     onAction: () -> Unit = {}
 ) {
     ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = {
+            onDismiss()
+          },
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight(0.3f),
@@ -110,7 +112,6 @@ fun ErrorScreen(
                     ),
                     onClick = {
                         onAction.invoke()
-                        onDismiss.invoke()
                     },
                     ) {
 

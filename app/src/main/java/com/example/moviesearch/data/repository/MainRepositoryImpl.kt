@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -43,7 +45,7 @@ class MainRepositoryImpl @Inject constructor(
             }
 
         } catch (e: Exception) {
-            NetworkResource.Error("An Error has occurred. Please try again")
+          processError(e)
         }
     }
 
@@ -63,7 +65,7 @@ class MainRepositoryImpl @Inject constructor(
             }
 
         } catch (e: Exception) {
-            NetworkResource.Error("An error has occurred")
+            processError(e)
         }
     }
 
@@ -73,6 +75,13 @@ class MainRepositoryImpl @Inject constructor(
 
     override fun getMovies(): Flow<List<MovieDetailResponse>?> {
         return movieDao.getAllMovies()
+    }
+
+    override fun <T> processError(exception: Exception): NetworkResource<T>{
+        return if (exception is UnknownHostException || exception is TimeoutException){
+            NetworkResource.Error("Network error. Please check your internet connection")
+        }else{
+            NetworkResource.Error("An Error has occurred. Please try again")}
     }
 
 

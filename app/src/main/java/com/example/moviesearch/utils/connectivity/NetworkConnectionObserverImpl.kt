@@ -35,10 +35,18 @@ class NetworkConnectionObserverImpl @Inject constructor(
                     super.onUnavailable()
                     launch {send(NetworkStatus.UnAvailable)}
                 }
+
+                override fun onLosing(network: Network, maxMsToLive: Int) {
+                    super.onLosing(network, maxMsToLive)
+                    launch {send(NetworkStatus.Loosing)}
+                }
             }
 
             connectivityManager.registerDefaultNetworkCallback(callback)
-            awaitClose { connectivityManager.unregisterNetworkCallback(callback) }
+            awaitClose {
+                connectivityManager.unregisterNetworkCallback(callback)
+                println("CLOSED")
+            }
         }.distinctUntilChanged()
     }
 }

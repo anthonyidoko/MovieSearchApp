@@ -15,6 +15,7 @@ interface MainRepository {
     suspend fun getMovieById(id: String): NetworkResource<MovieDetailResponse>
     fun getMovieFromRoomById(movieId: String): Flow<MovieDetailResponse?>
     fun getMovies(): Flow<List<MovieDetailResponse>?>
+    fun <T> processError(exception: Exception): NetworkResource<T>
 
 
 }

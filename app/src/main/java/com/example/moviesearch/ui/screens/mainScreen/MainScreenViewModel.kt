@@ -16,6 +16,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,7 +35,6 @@ class MainScreenViewModel @Inject constructor(
 
     private val databaseMovies = MutableStateFlow<List<Movie>>(emptyList())
 
-
     private fun searchMovies(searchQuery: String) {
         job?.cancel()
         _mainScreenUiState.update {
@@ -42,8 +43,7 @@ class MainScreenViewModel @Inject constructor(
             )
         }
         job = viewModelScope.launch {
-            delay(2000)
-            observeNetwork {
+            delay(1000)
                 when (val response = repository.searchMovie(searchQuery)) {
                     is NetworkResource.Error -> {
                         _mainScreenUiState.update {
@@ -61,7 +61,6 @@ class MainScreenViewModel @Inject constructor(
                         }
                     }
                 }
-            }
         }
     }
 
@@ -120,6 +119,11 @@ class MainScreenViewModel @Inject constructor(
         }
 
         if (trimmedQuery.length < 3) {
+            _mainScreenUiState.update {
+                it.copy(
+                    isError = false
+                )
+            }
             return
         }
 
@@ -129,31 +133,6 @@ class MainScreenViewModel @Inject constructor(
     fun resetMainScreenUiState() {
         _mainScreenUiState.update {
             MainScreenUiState()
-        }
-    }
-
-    private fun observeNetwork(block: suspend () -> Unit) {
-        viewModelScope.launch {
-            networkObserver.observe().collectLatest { status ->
-                when (status) {
-                    NetworkStatus.Available -> {
-                        block()
-                    }
-
-                    NetworkStatus.UnAvailable -> {
-                        _mainScreenUiState.update {
-                            it.copy(errorMessage = "Turn on your internet", loading = false)
-                        }
-                    }
-
-                    NetworkStatus.Lost -> {
-                        _mainScreenUiState.update {
-                            it.copy(errorMessage = "Internet connection lost", loading = false)
-                        }
-                    }
-
-                }
-            }
         }
     }
 }
