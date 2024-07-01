@@ -32,13 +32,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'API_KEY', credProperties["apiKey"]
             buildConfigField 'String', 'BASE_URL', credProperties["baseUrl"]
-            buildConfigField 'String', 'IMAGE_BASE_URL', credProperties["imageBaseUrl"]
         }
         debug{
             buildConfigField 'String', 'API_KEY', credProperties["apiKey"]
             buildConfigField 'String', 'BASE_URL', credProperties["baseUrl"]
-            buildConfigField 'String', 'IMAGE_BASE_URL', credProperties["imageBaseUrl"]
-
         }
     }
     compileOptions {

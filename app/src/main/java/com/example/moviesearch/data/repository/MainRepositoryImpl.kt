@@ -1,7 +1,5 @@
 package com.example.moviesearch.data.repository
 
-import android.content.res.Resources
-import androidx.lifecycle.viewModelScope
 import com.example.moviesearch.data.database.MovieSearchDatabase
 import com.example.moviesearch.data.model.Movie
 import com.example.moviesearch.data.model.MovieDetailResponse
@@ -9,14 +7,9 @@ import com.example.moviesearch.data.model.MovieSearchResponse
 import com.example.moviesearch.data.service.MovieSearchService
 import com.example.moviesearch.domain.MainRepository
 import com.example.moviesearch.utils.DispatchProvider
-import com.example.moviesearch.utils.NetworkConnectivityException
 import com.example.moviesearch.utils.NetworkResource
-import com.example.moviesearch.utils.connectivity.NetworkConnectionObserver
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
